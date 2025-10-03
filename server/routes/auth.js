@@ -226,7 +226,7 @@ router.get("/verify/:userId", async (req, res) => {
   }
 });
 
-const resend = new Resend("re_cjFvf3hz_32HYJy5oyYiUSZHm6p4bUtRPM");
+const resend = new Resend("re_97Zpz93y_HWSPApSmfVZN1WVMFPTzJsts");
 
 async function sendVerificationEmail(email, userId) {
   try {
