@@ -2,7 +2,7 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import db from "../config/database.js";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 const router = express.Router();
 
@@ -214,7 +214,8 @@ router.get("/verify/:userId", async (req, res) => {
           <p>Перенаправление в приложение...</p>
           <script>
             setTimeout(() => {
-              window.location.href = "http://localhost:3000/#/login?message=Email verified successfully";
+              // ✅ ИСПРАВЬТЕ НА PRODUCTION FRONTEND
+              window.location.href = "https://task5-admin.netlify.app/#/login?message=Email verified successfully";
             }, 2000);
           </script>
         </body>
@@ -225,22 +226,16 @@ router.get("/verify/:userId", async (req, res) => {
   }
 });
 
+const resend = new Resend("re_cjFvf3hz_32HYJy5oyYiUSZHm6p4bUtRPM");
+
 async function sendVerificationEmail(email, userId) {
   try {
+    console.log(`📧 Sending verification email to: ${email}`);
+
     const verificationLink = `https://task5-admin-production.up.railway.app/api/auth/verify/${userId}`;
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp.mail.ru",
-      port: 465,
-      secure: true,
-      auth: {
-        user: "2021proekt2021@mail.ru",
-        pass: "xVGACpVAoac5AEKXlYpx",
-      },
-    });
-
-    const mailOptions = {
-      from: '"Your App" <2021proekt2021@mail.ru>',
+    const { data, error } = await resend.emails.send({
+      from: "onboarding@resend.dev",
       to: email,
       subject: "Verify Your Account - THE APP",
       html: `
@@ -251,11 +246,17 @@ async function sendVerificationEmail(email, userId) {
           <p>Or copy this link: ${verificationLink}</p>
         </div>
       `,
-    };
+    });
 
-    await transporter.sendMail(mailOptions);
+    if (error) {
+      console.error("❌ Resend error:", error);
+      return;
+    }
+
+    console.log("✅ Email sent successfully via Resend");
+    console.log("✅ Email ID:", data.id);
   } catch (error) {
-    console.error("Email sending failed:", error);
+    console.error("❌ Email sending failed:", error);
   }
 }
 
