@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.js";
+import pool from "./config/database.js";
 
 const app = express();
 
@@ -14,6 +15,26 @@ app.use(
 );
 
 app.use(express.json());
+
+app.get("/api/test", (req, res) => {
+  res.json({ message: "Server is working! ✅" });
+});
+
+app.get("/api/test-db", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT NOW() as current_time");
+    res.json({
+      message: "Database connection successful ✅",
+      time: result.rows[0].current_time,
+    });
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).json({
+      error: "Database connection failed ❌",
+      details: error.message,
+    });
+  }
+});
 
 app.use("/api/auth", authRoutes);
 
