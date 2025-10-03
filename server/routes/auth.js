@@ -214,7 +214,6 @@ router.get("/verify/:userId", async (req, res) => {
           <p>Перенаправление в приложение...</p>
           <script>
             setTimeout(() => {
-              // ✅ ИСПРАВЬТЕ НА PRODUCTION FRONTEND
               window.location.href = "https://task5-admin.netlify.app/#/login?message=Email verified successfully";
             }, 2000);
           </script>
