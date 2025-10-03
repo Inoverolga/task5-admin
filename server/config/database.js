@@ -1,9 +1,16 @@
 import { Pool } from "pg";
 
-console.log("🔧 DATABASE_URL:", process.env.DATABASE_URL ? "SET" : "NOT SET");
+const connectionString =
+  process.env.DB_CONNECTION_STRING || process.env.DATABASE_URL;
+
+console.log("🔧 Connection string:", connectionString ? "SET" : "NOT SET");
+
+if (!connectionString) {
+  throw new Error("Database connection string is not set!");
+}
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: connectionString,
   ssl: { rejectUnauthorized: false },
 });
 
@@ -14,17 +21,5 @@ pool.on("connect", () => {
 pool.on("error", (err) => {
   console.error("❌ Database connection error:", err);
 });
-
-const testConnection = async () => {
-  try {
-    const client = await pool.connect();
-    console.log("📊 Database connection test: SUCCESS");
-    client.release();
-  } catch (error) {
-    console.error("📊 Database connection test: FAILED", error.message);
-  }
-};
-
-testConnection();
 
 export default pool;
