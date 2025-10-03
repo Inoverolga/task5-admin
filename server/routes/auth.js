@@ -227,7 +227,7 @@ router.get("/verify/:userId", async (req, res) => {
 
 async function sendVerificationEmail(email, userId) {
   try {
-    const verificationLink = `http://localhost:3001/api/auth/verify/${userId}`;
+    const verificationLink = `https://task5-admin-production.up.railway.app/api/auth/verify/${userId}`;
 
     const transporter = nodemailer.createTransport({
       host: "smtp.mail.ru",
