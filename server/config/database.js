@@ -1,8 +1,11 @@
 import { Pool } from "pg";
 
-const connectionString = process.env.DB_CONNECTION_STRING;
+console.log("🔧 Environment variables:", Object.keys(process.env));
+console.log("🔧 DB_CONNECTION_STRING:", process.env.DB_CONNECTION_STRING);
 
-console.log("🔧 Using RAILWAY PostgreSQL");
+const connectionString = process.env.DB_CONNECTION_STRING || "not-set";
+
+console.log("🔧 Final connection string:", connectionString);
 
 const pool = new Pool({
   connectionString: connectionString,
