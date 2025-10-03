@@ -1,6 +1,10 @@
 [build]
 builder = "nixpacks"
+buildCommand = "cd server && npm install"
 
 [deploy]
-startCommand = "npm start"
+startCommand = "cd server && node server.js"
 restartPolicyType = "ON_FAILURE"
+
+[build.environment]
+NODE_ENV = "production"
