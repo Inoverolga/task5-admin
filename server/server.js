@@ -16,6 +16,25 @@ app.use(
 
 app.use(express.json());
 
+const initDB = async () => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        status VARCHAR(50) DEFAULT 'unverified',
+        registration_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        last_login_time TIMESTAMP
+      )
+    `);
+    console.log("✅ Tables created successfully");
+  } catch (error) {
+    console.error("❌ Error creating tables:", error);
+  }
+};
+
 app.get("/api/test", (req, res) => {
   res.json({ message: "Server is working! ✅" });
 });
@@ -40,6 +59,8 @@ app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+initDB().then(() => {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+  });
 });
