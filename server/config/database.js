@@ -3,11 +3,12 @@ import { Pool } from "pg";
 const connectionString =
   "postgresql://postgres:Inover2025Olga@db.zgtjvemnaypdbfzfiinn.supabase.co:5432/postgres";
 
-console.log("🔧 Using SUPABASE connection");
+console.log("🔧 Using SUPABASE connection with IPv4");
 
 const pool = new Pool({
   connectionString: connectionString,
   ssl: { rejectUnauthorized: false },
+  family: 4,
 });
 
 const checkDB = async () => {
