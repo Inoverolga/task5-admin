@@ -29,6 +29,11 @@ const initDB = async () => {
         last_login_time TIMESTAMP
       )
     `);
+
+    await pool.query(`
+      CREATE UNIQUE INDEX IF NOT EXISTS users_email_idx 
+      ON users (email)
+    `);
     console.log("✅ Tables created successfully");
   } catch (error) {
     console.error("❌ Error creating tables:", error);

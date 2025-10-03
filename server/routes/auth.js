@@ -252,9 +252,6 @@ async function sendVerificationEmail(email, userId) {
       console.error("❌ Resend error:", error);
       return;
     }
-
-    console.log("✅ Email sent successfully via Resend");
-    console.log("✅ Email ID:", data.id);
   } catch (error) {
     console.error("❌ Email sending failed:", error);
   }
