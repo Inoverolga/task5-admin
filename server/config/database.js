@@ -1,25 +1,26 @@
 import { Pool } from "pg";
 
 const connectionString =
-  process.env.DB_CONNECTION_STRING || process.env.DATABASE_URL;
+  "postgresql://postgres:Inover2025Olga@db.zgtjvemnaypdbfzfiinn.supabase.co:5432/postgres";
 
-console.log("🔧 Connection string:", connectionString ? "SET" : "NOT SET");
-
-if (!connectionString) {
-  throw new Error("Database connection string is not set!");
-}
+console.log("🔧 Using SUPABASE connection");
 
 const pool = new Pool({
   connectionString: connectionString,
   ssl: { rejectUnauthorized: false },
 });
 
-pool.on("connect", () => {
-  console.log("✅ Database connected successfully");
-});
+const checkDB = async () => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query("SELECT NOW()");
+    console.log("✅ Database connected at:", result.rows[0].now);
+    client.release();
+  } catch (error) {
+    console.error("❌ Database connection failed:", error.message);
+  }
+};
 
-pool.on("error", (err) => {
-  console.error("❌ Database connection error:", err);
-});
+checkDB();
 
 export default pool;
