@@ -4,6 +4,11 @@ export const dataProvider = {
     if (resource === "users") {
       try {
         const token = localStorage.getItem("token");
+
+        if (!token) {
+          console.log("🔄 No token - skipping API call");
+          return { data: [], total: 0 };
+        }
         const response = await fetch(`${config.API_URL}/api/auth/all-users`, {
           headers: {
             Authorization: `Bearer ${token}`,
