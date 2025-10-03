@@ -1,11 +1,14 @@
 import { Pool } from "pg";
 
-console.log("🔧 Environment variables:", Object.keys(process.env));
-console.log("🔧 DB_CONNECTION_STRING:", process.env.DB_CONNECTION_STRING);
+console.log("🔧 DATABASE_URL value:", process.env.DATABASE_URL);
 
-const connectionString = process.env.DB_CONNECTION_STRING || "not-set";
+const connectionString = process.env.DATABASE_URL;
 
-console.log("🔧 Final connection string:", connectionString);
+if (!connectionString) {
+  throw new Error("DATABASE_URL is not set!");
+}
+
+console.log("🔧 Using DATABASE_URL");
 
 const pool = new Pool({
   connectionString: connectionString,
