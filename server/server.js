@@ -44,6 +44,28 @@ app.get("/api/test", (req, res) => {
   res.json({ message: "Server is working! ✅" });
 });
 
+app.get("/api/show-indexes", async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        schemaname,
+        tablename,
+        indexname,
+        indexdef
+      FROM pg_indexes 
+      WHERE tablename = 'users'
+      ORDER BY indexname
+    `);
+
+    res.json({
+      message: "Database indexes from PostgreSQL system catalog",
+      indexes: result.rows,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get("/api/test-db", async (req, res) => {
   try {
     const result = await pool.query("SELECT NOW() as current_time");
