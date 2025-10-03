@@ -1,16 +1,14 @@
+import config from "../config";
 export const dataProvider = {
   getList: async (resource, params) => {
     if (resource === "users") {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(
-          "http://localhost:3001/api/auth/all-users",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`${config.API_URL}/api/auth/all-users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));

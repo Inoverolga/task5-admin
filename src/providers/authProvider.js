@@ -1,7 +1,8 @@
+import config from "../config";
 export const authProvider = {
   login: async ({ username, password }) => {
     try {
-      const response = await fetch("http://localhost:3001/api/auth/login", {
+      const response = await fetch(`${config.API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: username, password }),

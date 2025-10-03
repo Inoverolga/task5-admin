@@ -1,3 +1,4 @@
+import config from "./config";
 import { useState } from "react";
 import {
   Container,
@@ -48,7 +49,7 @@ const Register = () => {
     setErrors({});
 
     try {
-      const response = await fetch("http://localhost:3001/api/auth/register", {
+      const response = await fetch(`${config.API_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

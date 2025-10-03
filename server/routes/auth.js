@@ -44,6 +44,7 @@ router.use(checkUser);
 router.get("/all-users", async (req, res) => {
   try {
     const { sort, order } = req.query;
+    console.log("Sort params:", sort, order);
 
     let orderBy = "last_login_time DESC";
 

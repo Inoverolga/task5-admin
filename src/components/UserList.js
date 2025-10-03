@@ -1,3 +1,4 @@
+import config from "../config";
 import {
   List,
   Datagrid,
@@ -31,8 +32,8 @@ const UserActionsToolbar = () => {
       const token = localStorage.getItem("token");
       const url =
         method === "DELETE"
-          ? "http://localhost:3001/api/auth/users"
-          : `http://localhost:3001/api/auth/users/${endpoint}`;
+          ? `${config.API_URL}/api/auth/users`
+          : `${config.API_URL}/api/auth/users/${endpoint}`;
       const response = await fetch(url, {
         method,
         headers: {
@@ -72,7 +73,7 @@ const UserActionsToolbar = () => {
     try {
       const token = localStorage.getItem("token");
       const allUsersResponse = await fetch(
-        "http://localhost:3001/api/auth/all-users",
+        `${config.API_URL}/api/auth/all-users`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -93,17 +94,14 @@ const UserActionsToolbar = () => {
         return;
       }
 
-      const deleteResponse = await fetch(
-        "http://localhost:3001/api/auth/users",
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ userIds: unverifiedUserIds }),
-        }
-      );
+      const deleteResponse = await fetch(`${config.API_URL}/api/auth/users`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ userIds: unverifiedUserIds }),
+      });
 
       if (!deleteResponse.ok) throw new Error("Delete failed");
 
