@@ -1,14 +1,12 @@
 import { Pool } from "pg";
 
-const connectionString =
-  "postgresql://postgres:Inover2025Olga@db.zgtjvemnaypdbfzfiinn.supabase.co:5432/postgres";
+const connectionString = process.env.DB_CONNECTION_STRING;
 
-console.log("🔧 Using SUPABASE connection with IPv4");
+console.log("🔧 Using RAILWAY PostgreSQL");
 
 const pool = new Pool({
   connectionString: connectionString,
   ssl: { rejectUnauthorized: false },
-  family: 4,
 });
 
 const checkDB = async () => {
